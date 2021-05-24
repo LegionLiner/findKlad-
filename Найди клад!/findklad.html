@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Найди клад!</title>
+  </head>
+  <body>
+    <h1 id="heading">Найди клад!</h1>
+    <p>Правила игры: кликать, пока не найдёшь клад. С каждым кликом выводится подсказка. Если не получится найти клад за 20 ходов - ты проиграл.</p>
+    <hr>
+    <img id="map" width="750" height="750" src="images/treasuremap.png" alt="">
+    <p id="distance"></p>
+    <p id="lastClick"></p>
+    <script src="https://code.jquery.com/jquery-2.1.0.js" charset="utf-8"></script>
+    <script>
+      var getRandomNumber = function (size) {
+        return Math.floor(Math.random() * size);
+      };
+      var getDistance = function (event, target) {
+        var diffX = event.offsetX - target.x;
+        var diffY = event.offsetY - target.y;
+        return Math.sqrt((diffX * diffX) + (diffY * diffY));
+      };
+      var getHint = function (distance) {
+        if (distance < 10) {
+          $("#lastClick").text("Осталось ходов " + (21 - clicks))
+          return "Обожжёшься!";
+        } else if (distance < 20) {
+          $("#lastClick").text("Осталось ходов " + (21 - clicks))
+          return "Очень горячо!";
+        } else if (distance < 40) {
+          $("#lastClick").text("Осталось ходов " + (21 - clicks))
+          return "Горячо";
+        } else if (distance < 80) {
+          $("#lastClick").text("Осталось ходов " + (21 - clicks))
+          return "Тепло";
+        } else if (distance < 180) {
+          $("#lastClick").text("Осталось ходов " + (21 - clicks))
+          return "Холодно";
+        } else if (distance < 320) {
+          return "Очень холодно";
+        } else if (distance < 460) {
+          return "Замёрзнешь!";
+        } else if (distance < 620) {
+          return "Ты почти льдина!";
+        } else {
+          return "Ты - льдина!";
+        }
+      }
+
+      var clicks = 0;
+      var width = 750;
+      var height = 750;
+
+      var target = {
+        x: getRandomNumber(width),
+        y: getRandomNumber(height)
+      };
+      $("#map").click(function(event) {
+        clicks++;
+        var distance = getDistance(event, target)
+        var distanceHint = getHint(distance)
+        $("#distance").text(distanceHint)
+        if (distance < 9) {
+          alert("Победа! Сделано кликов: " + clicks)
+        }
+        if (clicks > 20) {
+          $("#distance").text("КОНЕЦ ИГРЫ!")
+          $("#lastClick").text("0")
+        }
+      });
+    </script>
+  </body>
+</html>
